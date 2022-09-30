@@ -14,11 +14,20 @@ const SimplePicker = () => {
     selectedColor: 'gray'
   });
 
+  const getRandomColor = () => {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
   const toggleModal = () => {
     setState(prev => ({...prev, isModalVisble: !prev.isModalVisble}));
-};
+  };
 
-const setColor = (color) => {
+  const setColor = (color) => {
     setState(prev => ({...prev, selectedColor: color, isModalVisble: !prev.isModalVisble}));
   }
 
@@ -33,9 +42,9 @@ const setColor = (color) => {
   const PickComponent = ({item}) => {
     return (
       <TouchableOpacity
-        onPress={() => setColor(`#${item}`)}
-        style={[styles.pickCircle, {backgroundColor: `#${item}`}]}>
-        <Text style={styles.pickerText}>{`#${item}`}</Text>
+        onPress={() => setColor(`${item}`)}
+        style={[styles.pickCircle, {backgroundColor: `${item}`}]}>
+        <Text style={styles.pickerText}>{`${item}`}</Text>
       </TouchableOpacity>
     );
   };
@@ -43,7 +52,7 @@ const setColor = (color) => {
   const ColorsList = () => {
     
     const RANDOM_COLOR_ARRAY = new Array(9).fill(1).map(item => {
-        var randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        var randomColor = getRandomColor();
         return randomColor;
     });
 
