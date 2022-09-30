@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: 'white',
     width: '90%',
-    height: '80%',
+    height: '50%',
     borderRadius: 20,
   },
   crossIcon: {
