@@ -8,32 +8,41 @@ import {
   FlatList,
 } from 'react-native';
 
+const getRandomColor = () => {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+const RANDOM_COLOR_ARRAY = new Array(5).fill(1).map(item => {
+  var randomColor = getRandomColor();
+  return randomColor;
+});
+
 const SimplePicker = () => {
   const [state, setState] = useState({
     isModalVisble: false,
-    selectedColor: 'gray'
+    selectedColor: 'gray',
   });
-
-  const getRandomColor = () => {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
 
   const toggleModal = () => {
     setState(prev => ({...prev, isModalVisble: !prev.isModalVisble}));
   };
 
-  const setColor = (color) => {
-    setState(prev => ({...prev, selectedColor: color, isModalVisble: !prev.isModalVisble}));
-  }
+  const setColor = color => {
+    setState(prev => ({
+      ...prev,
+      selectedColor: color,
+      isModalVisble: !prev.isModalVisble,
+    }));
+  };
 
   const CloseIcon = () => {
     return (
-    <TouchableOpacity onPress={toggleModal} style={styles.closeIconContainer}>
+      <TouchableOpacity onPress={toggleModal} style={styles.closeIconContainer}>
         <Text style={styles.crossIcon}>X</Text>
       </TouchableOpacity>
     );
@@ -50,12 +59,6 @@ const SimplePicker = () => {
   };
 
   const ColorsList = () => {
-    
-    const RANDOM_COLOR_ARRAY = new Array(9).fill(1).map(item => {
-        var randomColor = getRandomColor();
-        return randomColor;
-    });
-
     return (
       <View style={styles.modalBackdrop}>
         <View style={styles.modalContainer}>
@@ -75,7 +78,9 @@ const SimplePicker = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={toggleModal} style={[styles.circleButton, {backgroundColor:state.selectedColor}]}>
+      <TouchableOpacity
+        onPress={toggleModal}
+        style={[styles.circleButton, {backgroundColor: state.selectedColor}]}>
         <Text style={styles.pickerText}>Picker</Text>
       </TouchableOpacity>
       <Modal visible={state.isModalVisble} animationType={'fade'}>
@@ -102,7 +107,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 50,
-    margin:10,
+    margin: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -129,16 +134,16 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingRight: 15,
     position: 'absolute',
-    zIndex:1
+    zIndex: 1,
   },
   flatListStyle: {
-    flex:1
+    flex: 1,
   },
   flatListContent: {
-    flexGrow:1,
-    justifyContent:'center',
-    alignItems:'center'
-  }
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default SimplePicker;
