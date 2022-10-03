@@ -8,19 +8,33 @@ import {
   FlatList,
 } from 'react-native';
 
-const getRandomColor = () => {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
+const isColor = (h) => {
+  var a = parseInt(h,16);
+  return (a.toString(16) === h)
   }
-  return color;
-};
 
-const RANDOM_COLOR_ARRAY = new Array(5).fill(1).map(item => {
-  var randomColor = getRandomColor();
-  return randomColor;
-});
+const RANDOM_COLOR_ARRAY = [
+  {
+    backgroundColor: '#26de81',
+    value: 1,
+  },
+  {
+    backgroundColor: '#fc5c65',
+    value: 2,
+  },
+  {
+    backgroundColor: '#fed330',
+    value: 3,
+  },
+  {
+    backgroundColor: '#4b7bec',
+    value: 4,
+  },
+  {
+    backgroundColor: 'defaultStyles.colors.medium',
+    value: 5,
+  },
+];
 
 const SimplePicker = () => {
   const [state, setState] = useState({
@@ -48,12 +62,15 @@ const SimplePicker = () => {
     );
   };
 
-  const PickComponent = ({item}) => {
+  const renderItem = ({item}) => {
+    if(isColor(item?.backgroundColor)){
+      return null;
+    }
     return (
       <TouchableOpacity
-        onPress={() => setColor(`${item}`)}
-        style={[styles.pickCircle, {backgroundColor: `${item}`}]}>
-        <Text style={styles.pickerText}>{`${item}`}</Text>
+        onPress={() => setColor(`${item?.backgroundColor}`)}
+        style={[styles.pickCircle, {backgroundColor: `${item?.backgroundColor}`}]}>
+        <Text style={styles.pickerText}>{`${item?.backgroundColor}`}</Text>
       </TouchableOpacity>
     );
   };
@@ -64,11 +81,11 @@ const SimplePicker = () => {
         <View style={styles.modalContainer}>
           <CloseIcon />
           <FlatList
-            numColumns={3}
+            numColumns={2}
             contentContainerStyle={styles.flatListContent}
             style={styles.flatListStyle}
             data={RANDOM_COLOR_ARRAY}
-            renderItem={({item}) => <PickComponent item={item} />}
+            renderItem={renderItem}
             keyExtractor={(_, index) => index.toString()}
           />
         </View>
